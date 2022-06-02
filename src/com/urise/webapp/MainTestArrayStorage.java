@@ -1,5 +1,10 @@
+package com.urise.webapp;
+
+import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.ArrayStorage;
+
 /**
- * Test for your ArrayStorage implementation
+ * Test for your com.urise.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
     static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
@@ -24,6 +29,10 @@ public class MainTestArrayStorage {
         printAll();
         ARRAY_STORAGE.delete(r1.uuid);
         printAll();
+        Resume r4 = new Resume();
+        r4.uuid = "uuid3";
+        ARRAY_STORAGE.update(r4);
+        System.out.println("Was update: " + ARRAY_STORAGE.get(r4.uuid));
         ARRAY_STORAGE.clear();
         printAll();
 
@@ -37,3 +46,22 @@ public class MainTestArrayStorage {
         }
     }
 }
+
+/*
+Ожидаемый вывод теста:
+Get r1: uuid1
+Size: 3
+Get dummy: null
+
+Get All
+uuid1
+uuid2
+uuid3
+
+Get All
+uuid3
+uuid2
+
+Get All
+Size: 0
+ */
