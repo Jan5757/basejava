@@ -33,7 +33,7 @@ public class ArrayStorage {
         Objects.requireNonNull(r, "Резюме не должно быть пустым (null)");
         if (size == STORAGE_LIMIT) {
             System.out.println("В базе закончилось свободное место!");
-        } else if (findIndex(r.uuid) < 0) {
+        } else if (findIndex(r.uuid) > 0) {
             System.out.println("Резюме " + r.uuid + " уже есть в базе!");
         } else {
             storage[size] = r;
@@ -47,22 +47,18 @@ public class ArrayStorage {
             System.out.println("Резюме " + uuid + " отсутствует в базе!");
             return null;
         } else {
-          return storage[index];
+            return storage[index];
         }
     }
 
     public void delete(String uuid) {
-//        if (!findIndex(uuid)) {
-//            System.out.println("Резюме " + uuid + " отсутствует в базе!");
-//            return;
-//        }
-        for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(uuid)) {
-                storage[i] = storage[size - 1];
-                storage[size - 1] = null;
-                size--;
-                return;
-            }
+        int index = findIndex(uuid);
+        if (index < 0) {
+            System.out.println("Резюме " + uuid + " отсутствует в базе!");
+        } else {
+            storage[index] = storage[size - 1];
+            storage[size - 1] = null;
+            size--;
         }
     }
 

@@ -51,6 +51,7 @@ public class MainTestArrayStorage {
 Ожидаемый вывод теста:
 Get r1: uuid1
 Size: 3
+Резюме dummy отсутствует в базе!
 Get dummy: null
 
 Get All
@@ -61,6 +62,7 @@ uuid3
 Get All
 uuid3
 uuid2
+Was update: uuid3
 
 Get All
 Size: 0
