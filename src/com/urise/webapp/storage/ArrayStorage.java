@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 public class ArrayStorage {
     protected static final int STORAGE_LIMIT = 10000;
-    private Resume[] storage = new Resume[STORAGE_LIMIT];
+    private final Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size = 0;
 
     public void clear() {
@@ -81,5 +81,4 @@ public class ArrayStorage {
         }
         return -1;
     }
-
 }
