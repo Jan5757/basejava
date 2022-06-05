@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage extends AbstractArrayStorage{
+public class ArrayStorage extends AbstractArrayStorage {
 
     @Override//only new resume
     public void save(Resume r) {
@@ -21,6 +21,7 @@ public class ArrayStorage extends AbstractArrayStorage{
             size++;
         }
     }
+
     @Override
     protected int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {

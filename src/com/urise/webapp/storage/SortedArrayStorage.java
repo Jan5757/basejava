@@ -5,7 +5,7 @@ import com.urise.webapp.model.Resume;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class SortedArrayStorage extends AbstractArrayStorage{
+public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     public void save(Resume r) {
@@ -17,8 +17,8 @@ public class SortedArrayStorage extends AbstractArrayStorage{
             System.out.println("Резюме " + r.getUuid() + " уже есть в базе!");
         } else {
             int indexForInsert = -index - 1;
-            for (int i = size; i > indexForInsert ; i--) {
-                storage[i] = storage[i-1];
+            for (int i = size; i > indexForInsert; i--) {
+                storage[i] = storage[i - 1];
             }
             storage[indexForInsert] = r;
             size++;
