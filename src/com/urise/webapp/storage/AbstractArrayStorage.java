@@ -1,5 +1,8 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exception.ExistStorageException;
+import com.urise.webapp.exception.NotExistStorageException;
+import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -20,10 +23,10 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public void update(Resume r) {
-        Objects.requireNonNull(r, "Резюме не должно быть пустым (null)");
+        Objects.requireNonNull(r, "Resume should not be empty (null)");
         int index = getIndex(r.getUuid());
         if (index < 0) {
-            System.out.println("Резюме " + r.getUuid() + " отсутствует в базе!");
+            throw new NotExistStorageException(r.getUuid());
         } else {
             storage[index] = r;
         }
@@ -31,12 +34,12 @@ public abstract class AbstractArrayStorage implements Storage {
 
     @Override
     public void save(Resume r) {
-        Objects.requireNonNull(r, "Резюме не должно быть пустым (null)");
+        Objects.requireNonNull(r, "Resume should not be empty (null)");
         int index = getIndex(r.getUuid());
         if (size == STORAGE_LIMIT) {
-            System.out.println("В базе закончилось свободное место!");
+            throw new StorageException("Storage overflow", r.getUuid());
         } else if (index > 0) {
-            System.out.println("Резюме " + r.getUuid() + " уже есть в базе!");
+            throw new ExistStorageException(r.getUuid());
         } else {
             insertElement(r, index);
             size++;
@@ -46,8 +49,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
-            System.out.println("Резюме " + uuid + " отсутствует в базе!");
-            return null;
+            throw new NotExistStorageException(uuid);
         }
         return storage[index];
     }
@@ -55,7 +57,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
-            System.out.println("Резюме " + uuid + " отсутствует в базе!");
+            throw new NotExistStorageException(uuid);
         } else {
             deleteElement(index);
             size--;
