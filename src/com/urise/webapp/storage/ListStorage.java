@@ -5,21 +5,16 @@ import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-/**
- * Array based storage for Resumes
- */
-public abstract class AbstractArrayStorage extends AbstractStorage {
-    protected static final int STORAGE_LIMIT = 10000;
+public class ListStorage extends AbstractStorage{
 
-    protected Resume[] storage = new Resume[STORAGE_LIMIT];
-    protected int size = 0;
+    protected List<Resume> storage = new ArrayList<>();
 
     public void clear() {
-        Arrays.fill(storage, 0, size , null);
-        size = 0;
+        storage.clear();
     }
 
     public void update(Resume r) {
@@ -28,7 +23,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         if (index < 0) {
             throw new NotExistStorageException(r.getUuid());
         } else {
-            storage[index] = r;
+            updateElement(index, r);
         }
     }
 
@@ -36,13 +31,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public void save(Resume r) {
         Objects.requireNonNull(r, "Resume should not be empty (null)");
         int index = getIndex(r.getUuid());
-        if (size == STORAGE_LIMIT) {
+        if (storage.size() == Integer.MAX_VALUE) {
             throw new StorageException("Storage overflow", r.getUuid());
         } else if (index >= 0) {
             throw new ExistStorageException(r.getUuid());
         } else {
             insertElement(r, index);
-            size++;
         }
     }
 
@@ -51,7 +45,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         if (index < 0) {
             throw new NotExistStorageException(uuid);
         }
-        return storage[index];
+        return getElement(index);
     }
 
     public void delete(String uuid) {
@@ -60,21 +54,34 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
             throw new NotExistStorageException(uuid);
         } else {
             deleteElement(index);
-            size--;
         }
     }
 
     public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
+        return storage.toArray(new Resume[0]);
     }
 
     public int size() {
-        return size;
+        return storage.size();
     }
 
-    protected abstract int getIndex(String uuid);
+    protected int getIndex(String uuid) {
+        return storage.indexOf(new Resume(uuid));
+    }
 
-    protected abstract void insertElement(Resume r, int index);
+    protected void insertElement(Resume r, int index) {
+        storage.add(r);
+    }
 
-    protected abstract void deleteElement(int index);
+    protected void deleteElement(int index) {
+        storage.remove(index);
+    }
+
+    protected void updateElement(int index, Resume r) {
+        storage.add(index, r);
+    }
+
+    protected Resume getElement(int index) {
+        return storage.get(index);
+    }
 }
