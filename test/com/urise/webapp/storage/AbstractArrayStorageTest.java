@@ -16,9 +16,15 @@ public abstract class AbstractArrayStorageTest {
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
 
-    private final Resume resume1 = new Resume(UUID_1);
-    private final Resume resume2 = new Resume(UUID_2);
-    private final Resume resume3 = new Resume(UUID_3);
+    private static final Resume resume1;
+    private static final Resume resume2;
+    private static final Resume resume3;
+
+    static {
+        resume1 = new Resume(UUID_1);
+        resume2 = new Resume(UUID_2);
+        resume3 = new Resume(UUID_3);
+    }
 
     public AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
