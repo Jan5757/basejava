@@ -18,7 +18,7 @@ public abstract class AbstractArrayStorage implements Storage {
     protected int size = 0;
 
     public void clear() {
-        Arrays.fill(storage, 0, size - 1, null);
+        Arrays.fill(storage, 0, size , null);
         size = 0;
     }
 
@@ -38,7 +38,7 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = getIndex(r.getUuid());
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", r.getUuid());
-        } else if (index > 0) {
+        } else if (index >= 0) {
             throw new ExistStorageException(r.getUuid());
         } else {
             insertElement(r, index);
