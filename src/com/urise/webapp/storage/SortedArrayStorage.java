@@ -19,10 +19,27 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         if (size - indexForInsert >= 0)
             System.arraycopy(storage, indexForInsert, storage, indexForInsert + 1, size - indexForInsert);
         storage[indexForInsert] = r;
+        size++;
     }
 
     @Override
     protected void deleteElement(int index) {
         if (size - index >= 0) System.arraycopy(storage, index + 1, storage, index, size - index);
+        size--;
+    }
+
+    @Override
+    protected void updateElement(int index, Resume r) {
+        storage[index] = r;
+    }
+
+    @Override
+    protected Resume getElement(int index) {
+        return storage[index];
+    }
+
+    @Override
+    protected boolean isStorageLimit() {
+        return size == STORAGE_LIMIT;
     }
 }

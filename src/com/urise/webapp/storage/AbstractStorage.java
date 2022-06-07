@@ -1,41 +1,63 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exception.ExistStorageException;
+import com.urise.webapp.exception.NotExistStorageException;
+import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
-public abstract class AbstractStorage implements Storage{
+import java.util.Objects;
 
-    @Override
-    public void clear() {
+public abstract class AbstractStorage implements Storage {
 
-    }
-
-    @Override
     public void update(Resume r) {
-
+        Objects.requireNonNull(r, "Resume should not be empty (null)");
+        int index = getIndex(r.getUuid());
+        if (index < 0) {
+            throw new NotExistStorageException(r.getUuid());
+        } else {
+            updateElement(index, r);
+        }
     }
 
     @Override
     public void save(Resume r) {
-
+        Objects.requireNonNull(r, "Resume should not be empty (null)");
+        int index = getIndex(r.getUuid());
+        if (isStorageLimit()) {
+            throw new StorageException("Storage overflow", r.getUuid());
+        } else if (index >= 0) {
+            throw new ExistStorageException(r.getUuid());
+        } else {
+            insertElement(r, index);
+        }
     }
 
-    @Override
     public Resume get(String uuid) {
-        return null;
+        int index = getIndex(uuid);
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
+        }
+        return getElement(index);
     }
 
-    @Override
     public void delete(String uuid) {
-
+        int index = getIndex(uuid);
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
+        } else {
+            deleteElement(index);
+        }
     }
 
-    @Override
-    public Resume[] getAll() {
-        return new Resume[0];
-    }
+    protected abstract int getIndex(String uuid);
 
-    @Override
-    public int size() {
-        return 0;
-    }
+    protected abstract void insertElement(Resume r, int index);
+
+    protected abstract void deleteElement(int index);
+
+    protected abstract void updateElement(int index, Resume r);
+
+    protected abstract Resume getElement(int index);
+
+    protected abstract boolean isStorageLimit();
 }
