@@ -50,26 +50,26 @@ public abstract class AbstractArrayStorageTest {
     public void update() {
         Resume expected = new Resume(UUID_3);
         storage.update(expected);
-        Resume real = storage.get(UUID_3);
-        Assert.assertSame(expected, real);
+        Resume actual = storage.get(UUID_3);
+        Assert.assertSame(expected, actual);
     }
 
     @Test
     public void save() {
         storage.save(RESUME_4);
-        Assert.assertTrue(assertGet(RESUME_4));
-        Assert.assertTrue(assertSize(4));
+        assertGet(RESUME_4);
+        assertSize(4);
     }
 
     @Test
     public void get() {
-        Assert.assertTrue(assertGet(RESUME_1));
+        assertGet(RESUME_1);
     }
 
     @Test
     public void delete() {
         storage.delete(UUID_1);
-        Assert.assertEquals(2, storage.size());
+        assertSize(2);
         Assert.assertThrows(NotExistStorageException.class, () -> storage.get(UUID_1));
     }
 
@@ -77,22 +77,21 @@ public abstract class AbstractArrayStorageTest {
     public void getAll() {
         Resume[] expected = {RESUME_1, RESUME_2, RESUME_3};
         Assert.assertArrayEquals(expected, storage.getAll());
-        Assert.assertTrue(assertSize(storage.getAll().length));
+        assertSize(storage.getAll().length);
 
     }
 
     @Test
     public void size() {
-        Assert.assertTrue(assertSize(3));
+        assertSize(3);
     }
 
-    public boolean assertSize(int expected) {
-        return expected == storage.size();
+    public void assertSize(int expected) {
+        Assert.assertEquals(expected, storage.size());
     }
 
-    public boolean assertGet(Resume expected) {
-        Resume real = storage.get(expected.getUuid());
-        return expected == real;
+    public void assertGet(Resume expected) {
+        Assert.assertEquals(expected, storage.get(expected.getUuid()));
     }
 
     @Test(expected = NotExistStorageException.class)
