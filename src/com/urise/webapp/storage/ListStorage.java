@@ -21,28 +21,38 @@ public class ListStorage extends AbstractStorage {
         return storage.size();
     }
 
-    protected int getIndex(String uuid) {
+    protected Object getSearchKey(String uuid) {
         return storage.indexOf(new Resume(uuid));
     }
 
-    protected void insertElement(Resume r, int index) {
+    protected void insertElement(Resume r, Object key) {
         storage.add(r);
     }
 
-    protected void deleteElement(int index) {
-        storage.remove(index);
+    protected void deleteElement(Object key) {
+        storage.remove((int) key);
     }
 
-    protected void updateElement(int index, Resume r) {
-        storage.add(index, r);
+    protected void updateElement(Object key, Resume r) {
+        storage.add((Integer) key, r);
     }
 
-    protected Resume getElement(int index) {
-        return storage.get(index);
+    protected Resume getElement(Object key) {
+        return storage.get((int) key);
     }
 
     @Override
     protected boolean isStorageLimit() {
         return storage.size() == Integer.MAX_VALUE;
+    }
+
+    @Override
+    protected boolean isKeyExist(Object key) {
+        return (int) key >= 0;
+    }
+
+    @Override
+    protected boolean isKeyNotExist(Object key) {
+        return (int) key < 0;
     }
 }

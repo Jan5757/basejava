@@ -25,4 +25,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public int size() {
         return size;
     }
+
+    @Override
+    protected boolean isKeyExist(Object key) {
+        return (int) key >= 0;
+    }
+
+    @Override
+    protected boolean isKeyNotExist(Object key) {
+        return (int) key < 0;
+    }
 }

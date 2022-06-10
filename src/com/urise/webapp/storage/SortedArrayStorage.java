@@ -8,14 +8,14 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     //must use Arrays.binarySearch for insertElement(Resume r, int index) working correctly
     @Override
-    protected int getIndex(String uuid) {
+    protected Object getSearchKey(String uuid) {
         Resume searchKey = new Resume(uuid);
         return Arrays.binarySearch(storage, 0, size, searchKey);
     }
 
     @Override
-    protected void insertElement(Resume r, int index) {
-        int indexForInsert = -index - 1;
+    protected void insertElement(Resume r, Object key) {
+        int indexForInsert = -(int) key - 1;
         if (size - indexForInsert >= 0)
             System.arraycopy(storage, indexForInsert, storage, indexForInsert + 1, size - indexForInsert);
         storage[indexForInsert] = r;
@@ -23,19 +23,20 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void deleteElement(int index) {
+    protected void deleteElement(Object key) {
+        int index = (int) key;
         if (size - index >= 0) System.arraycopy(storage, index + 1, storage, index, size - index);
         size--;
     }
 
     @Override
-    protected void updateElement(int index, Resume r) {
-        storage[index] = r;
+    protected void updateElement(Object key, Resume r) {
+        storage[(int) key] = r;
     }
 
     @Override
-    protected Resume getElement(int index) {
-        return storage[index];
+    protected Resume getElement(Object key) {
+        return storage[(int) key];
     }
 
     @Override
