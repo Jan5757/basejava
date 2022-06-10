@@ -25,10 +25,4 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public int size() {
         return size;
     }
-
-    protected abstract int getIndex(String uuid);
-
-    protected abstract void insertElement(Resume r, int index);
-
-    protected abstract void deleteElement(int index);
 }
