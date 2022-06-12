@@ -11,47 +11,45 @@ public abstract class AbstractStorage implements Storage {
 
     public void update(Resume r) {
         Objects.requireNonNull(r, "Resume should not be empty (null)");
-        Object key = getSearchKey(r.getUuid());
-        if (isKeyNotExist(key)) {
-            throw new NotExistStorageException(r.getUuid());
-        } else {
-            updateElement(key, r);
-        }
+        updateElement(getExistingSearchKey(r.getUuid()), r);
     }
 
     @Override
     public void save(Resume r) {
         Objects.requireNonNull(r, "Resume should not be empty (null)");
-        Object key = getSearchKey(r.getUuid());
         if (isStorageLimit()) {
             throw new StorageException("Storage overflow", r.getUuid());
-        } else if (isKeyExist(key)) {
-            throw new ExistStorageException(r.getUuid());
-        } else {
-            insertElement(r, key);
         }
+        insertElement(getNotExistingSearchKey(r.getUuid()), r);
     }
 
     public Resume get(String uuid) {
-        Object key = getSearchKey(uuid);
-        if (isKeyNotExist(key)) {
-            throw new NotExistStorageException(uuid);
-        }
-        return getElement(key);
+        return getElement(getExistingSearchKey(uuid));
     }
 
     public void delete(String uuid) {
+        deleteElement(getExistingSearchKey(uuid));
+    }
+
+    protected Object getExistingSearchKey(String uuid) {
         Object key = getSearchKey(uuid);
-        if (isKeyNotExist(key)) {
+        if (!isExist(key)) {
             throw new NotExistStorageException(uuid);
-        } else {
-            deleteElement(key);
         }
+        return key;
+    }
+
+    protected Object getNotExistingSearchKey(String uuid) {
+        Object key = getSearchKey(uuid);
+        if (isExist(key)) {
+            throw new ExistStorageException(uuid);
+        }
+        return key;
     }
 
     protected abstract Object getSearchKey(String uuid);
 
-    protected abstract void insertElement(Resume r, Object key);
+    protected abstract void insertElement(Object key, Resume r);
 
     protected abstract void deleteElement(Object key);
 
@@ -61,7 +59,5 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract boolean isStorageLimit();
 
-    protected abstract boolean isKeyExist(Object key);
-
-    protected abstract boolean isKeyNotExist(Object key);
+    protected abstract boolean isExist(Object key);
 }

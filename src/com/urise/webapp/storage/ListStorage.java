@@ -25,7 +25,7 @@ public class ListStorage extends AbstractStorage {
         return storage.indexOf(new Resume(uuid));
     }
 
-    protected void insertElement(Resume r, Object key) {
+    protected void insertElement(Object key, Resume r) {
         storage.add(r);
     }
 
@@ -47,12 +47,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isKeyExist(Object key) {
+    protected boolean isExist(Object key) {
         return (int) key >= 0;
-    }
-
-    @Override
-    protected boolean isKeyNotExist(Object key) {
-        return (int) key < 0;
     }
 }
