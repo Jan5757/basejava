@@ -16,31 +16,9 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     @Override
     protected void insertElement(Object key, Resume r) {
         int indexForInsert = -(int) key - 1;
-        if (size - indexForInsert >= 0)
+        if (size - indexForInsert >= 0) { //нужно ли это условие тут? ключ мы подаём известный
             System.arraycopy(storage, indexForInsert, storage, indexForInsert + 1, size - indexForInsert);
+        }
         storage[indexForInsert] = r;
-        size++;
-    }
-
-    @Override
-    protected void deleteElement(Object key) {
-        int index = (int) key;
-        if (size - index >= 0) System.arraycopy(storage, index + 1, storage, index, size - index);
-        size--;
-    }
-
-    @Override
-    protected void updateElement(Object key, Resume r) {
-        storage[(int) key] = r;
-    }
-
-    @Override
-    protected Resume getElement(Object key) {
-        return storage[(int) key];
-    }
-
-    @Override
-    protected boolean isStorageLimit() {
-        return size == STORAGE_LIMIT;
     }
 }

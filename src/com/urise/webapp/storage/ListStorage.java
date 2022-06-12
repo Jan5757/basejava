@@ -25,25 +25,20 @@ public class ListStorage extends AbstractStorage {
         return storage.indexOf(new Resume(uuid));
     }
 
-    protected void insertElement(Object key, Resume r) {
+    protected void doSave(Object key, Resume r) {
         storage.add(r);
     }
 
-    protected void deleteElement(Object key) {
+    protected void doDelete(Object key) {
         storage.remove((int) key);
     }
 
-    protected void updateElement(Object key, Resume r) {
+    protected void doUpdate(Object key, Resume r) {
         storage.add((Integer) key, r);
     }
 
-    protected Resume getElement(Object key) {
+    protected Resume doGet(Object key) {
         return storage.get((int) key);
-    }
-
-    @Override
-    protected boolean isStorageLimit() {
-        return storage.size() == Integer.MAX_VALUE;
     }
 
     @Override
