@@ -21,4 +21,9 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         }
         storage[indexForInsert] = r;
     }
+
+    @Override
+    protected void doDeleteSpecial(int index) {
+        System.arraycopy(storage, index + 1, storage, index, size - index);
+    }
 }

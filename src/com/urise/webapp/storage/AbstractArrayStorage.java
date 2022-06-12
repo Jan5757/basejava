@@ -48,9 +48,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     @Override
     protected void doDelete(Object key) {
         int index = (int) key;
-        if (size - index >= 0) { //нужно ли это условие тут, если ключ уже валиден
-            System.arraycopy(storage, index + 1, storage, index, size - index);
-        }
+        doDeleteSpecial(index);
         size--;
     }
 
@@ -65,4 +63,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     protected abstract void insertElement(Object key, Resume r);
+
+    protected abstract void doDeleteSpecial(int index);
 }
